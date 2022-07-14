@@ -115,3 +115,7 @@ import { MenuIcon, XIcon } from '@heroicons/react/outline'
 ```
 2. Se instalan los paquetes: `npm i @heroicons/react @headlessui/react`.
 3. Se agrego el template en index.js
+
+== Integracion de components ==
+1. Se traen los componentes del siguiente repositorio: https://github.com/GNDX/NEXTJS-UI .
+2. Se integran en la carpeta src.
