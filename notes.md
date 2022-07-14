@@ -88,3 +88,20 @@ module.exports = {
 @tailwind components;
 @tailwind utilities;
 ```
+
+== Configuración del archivo jsconfig.json ==
+
+1. Se crea el archivo 'jsconfig.json' y se agrega los path para las rutas:
+
+```
+{
+    "compilerOptions": {
+        "baseUrl": "src",
+        "paths": {
+            "@styles/*": [
+                "styles/tailwind*"
+            ]
+        }
+    }
+}
+```
