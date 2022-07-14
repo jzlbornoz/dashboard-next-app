@@ -99,9 +99,19 @@ module.exports = {
         "baseUrl": "src",
         "paths": {
             "@styles/*": [
-                "styles/tailwind*"
+                "styles/*"
             ]
         }
     }
 }
 ```
+
+== Integracion de componentes predefinidos con TailwindUI ==
+1. Una vez leocalizado el template que se va utilizar se instala las dependencias correspondientes.
+```
+import { Fragment } from 'react'
+import { Popover, Transition } from '@headlessui/react'
+import { MenuIcon, XIcon } from '@heroicons/react/outline'
+```
+2. Se instalan los paquetes: `npm i @heroicons/react @headlessui/react`.
+3. Se agrego el template en index.js
