@@ -107,15 +107,74 @@ module.exports = {
 ```
 
 == Integracion de componentes predefinidos con TailwindUI ==
+
 1. Una vez leocalizado el template que se va utilizar se instala las dependencias correspondientes.
+
 ```
 import { Fragment } from 'react'
 import { Popover, Transition } from '@headlessui/react'
 import { MenuIcon, XIcon } from '@heroicons/react/outline'
 ```
+
 2. Se instalan los paquetes: `npm i @heroicons/react @headlessui/react`.
 3. Se agrego el template en index.js
 
 == Integracion de components ==
+
 1. Se traen los componentes del siguiente repositorio: https://github.com/GNDX/NEXTJS-UI .
 2. Se integran en la carpeta src.
+
+== Creación del layout principal e integración de los Page Components ==
+
+1. Se crea la carpeta 'layout' en src, con el archivo 'MainLayout.js':
+
+```
+import React from 'react';
+
+const MainLayout = ({ children }) => {
+    return (
+        <>
+            <div className="min-h-full">
+                <main>
+                    <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+                        {children}
+                    </div>
+                </main>
+
+            </div>
+        </>
+    );
+};
+
+export { MainLayout };
+
+
+```
+
+2. Se importan los componentes a utilizar
+
+```
+import Header from '@components/Header';
+import Nav from '@common/Nav';
+```
+
+3. Se agregan los alias en el archivo 'jsconfig.json'.
+4. Se agrega el MainLayout en el '\_app.js'.
+
+```
+import '@styles/tailwind.css';
+import { MainLayout } from '@layout/MainLayout';
+
+function MyApp({ Component, pageProps }) {
+  return (
+    <>
+      <MainLayout>
+        <Component {...pageProps} />
+      </MainLayout>
+    </>
+  )
+}
+
+export default MyApp;
+
+```
