@@ -178,3 +178,38 @@ function MyApp({ Component, pageProps }) {
 export default MyApp;
 
 ```
+
+== Lógica del componente login ==
+
+1. Se agrega la pagina login.
+
+```
+import React from 'react';
+import LoginPage from '@components/LoginPage';
+
+const Login = () => {
+    return (
+        <>
+            <LoginPage />
+        </>
+    );
+};
+
+export default Login;
+
+```
+
+2.  Se agrega la siguiente logica al archivo 'LoginPage':
+
+```
+  const userRef = useRef(null);
+  const passwordRef = useRef(null);
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const user = userRef.current.value;
+    const password = passwordRef.current.value;
+    //console.log(user + password);
+  }
+
+
+```
