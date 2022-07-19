@@ -213,15 +213,20 @@ export default Login;
 
 
 ```
+
 == Presentación de la API ==
+
 1. Se crea la carpeta 'services'.
 2. Se crea la carpeta 'api' y se agrega el index.js
-3. se agrega lo siguiente al ".env.local": 
+3. se agrega lo siguiente al ".env.local":
+
 ```
 NEXT_PUBLIC_API_URL=https://api.escuelajs.co
 NEXT_PUBLIC_API_VERSION=v1
 ```
+
 4. Se crea la estrucutra que permite organizar y trabajar los puntos de entrada, heciendo asi la app mas rapida.
+
 ```
 const API = process.env.NEXT_PUBLIC_API_URL;
 const VERSION = process.env.NEXT_PUBLIC_API_VERSION;
@@ -242,4 +247,66 @@ const endPoints = {
         getFile: (filename) =>  `${API}/api/${VERSION}/files/${filename}`
     }
 }
+```
+
+== Creación del custom hook useAuth ==
+
+1. Se crea la carpeta hooks con el archivo useAuth.js.
+2. Se instala `npm install js-cookie axios`.
+3. Se crea la carpeta context, en la cual se crea el context "AuthContext".
+4. En el hook se crea el provider del context y se trabaja en el valor del mismo.
+
+```
+import React, { useContext, useState } from 'react';
+import AuthContext from '@context/AuthContext';
+
+export function ProviderAuth({ children }) {
+    const auth = useProviderAuth();
+    return (
+        <AuthContext.Provider value={auth} >
+            {children}
+        </AuthContext.Provider>
+    )
+}
+
+const useAuth = () => {
+    useContext(AuthContext);
+}
+
+const useProviderAuth = () => {
+    const [user, setUser] = useState(null);
+    const signIn = async (email, password) => {
+        setUser('landing')
+    }
+
+    return {
+        user,
+        signIn
+    }
+}
+
+export default useAuth;
+```
+
+5. Se agrega el provider al '\_app.js' conectandolo asi con toda la aplicacion:
+
+```
+import '@styles/tailwind.css';
+import { MainLayout } from '@layout/MainLayout';
+import { ProviderAuth } from '@hooks/useAuth';
+
+function MyApp({ Component, pageProps }) {
+  return (
+    <>
+      <ProviderAuth>
+        <MainLayout>
+          <Component {...pageProps} />
+        </MainLayout>
+      </ProviderAuth>
+    </>
+  );
+}
+
+export default MyApp;
+
 ```
