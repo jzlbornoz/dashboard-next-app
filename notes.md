@@ -57,7 +57,7 @@ module.exports = {
 const colors = require('tailwindcss/colors');
 ```
 
-- Para poder escuchar los canbios se agrega la configuracione en purge, posteriormente se agrega la paleta de colores en theme.
+- Para poder escuchar los cambios se agrega la configuracione en purge, posteriormente se agrega la paleta de colores en theme.
 
 ```
 /** @type {import('tailwindcss').Config} */
@@ -212,4 +212,34 @@ export default Login;
   }
 
 
+```
+== Presentación de la API ==
+1. Se crea la carpeta 'services'.
+2. Se crea la carpeta 'api' y se agrega el index.js
+3. se agrega lo siguiente al ".env.local": 
+```
+NEXT_PUBLIC_API_URL=https://api.escuelajs.co
+NEXT_PUBLIC_API_VERSION=v1
+```
+4. Se crea la estrucutra que permite organizar y trabajar los puntos de entrada, heciendo asi la app mas rapida.
+```
+const API = process.env.NEXT_PUBLIC_API_URL;
+const VERSION = process.env.NEXT_PUBLIC_API_VERSION;
+const endPoints = {
+    auth: {
+        login: `${API}/api/${VERSION}/auth/login`,
+        profile: `${API}/api/${VERSION}/auth/profile`,
+    },
+    products: {
+        getAllProducts: `${API}/api/${VERSION}/products`,
+        getProduct: (id) => `${API}/api/${VERSION}/products/${id}`
+    },
+    users: {
+        getUsers : `${API}/api/${VERSION}/users?limit=10`,
+        getUserAvailable: `${API}/api/${VERSION}/users/is-available`
+    },
+    files: {
+        getFile: (filename) =>  `${API}/api/${VERSION}/files/${filename}`
+    }
+}
 ```
