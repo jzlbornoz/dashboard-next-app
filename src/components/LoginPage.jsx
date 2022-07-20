@@ -11,8 +11,15 @@ export default function LoginPage() {
     event.preventDefault();
     const user = userRef.current.value;
     const password = passwordRef.current.value;
-    auth.signIn(user, password).then(() =>{
-      console.log("LoginSucces")}
+    auth.signIn(user, password).then(() => {
+      auth.setError(false);
+      console.log("LoginSucces")
+    },
+      (err) => {
+        console.log("Error Login");
+        console.error(err);
+        auth.setError(true);
+      }
     );
   };
 
@@ -86,6 +93,11 @@ export default function LoginPage() {
                 Sign in
               </button>
             </div>
+            {auth.error ? (
+              <div className="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
+                <span className="font-medium">Login Failed!</span> {auth.error}
+              </div>
+            ) : null}
           </form>
         </div>
       </div>

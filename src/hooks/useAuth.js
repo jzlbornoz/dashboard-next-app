@@ -10,11 +10,12 @@ export function ProviderAuth({ children }) {
 }
 
 export const useAuth = () => {
-   return useContext(AuthContext);
+    return useContext(AuthContext);
 };
 
 function useProviderAuth() {
     const [user, setUser] = useState(null);
+    const [error , setError] = useState(false);
 
     const signIn = async (email, password) => {
         const options = {
@@ -25,12 +26,16 @@ function useProviderAuth() {
         };
         //==Lectura del AccessToken que viene desde la api, para posteriormente agregarla a una cookie
         const { data: access_token } = await axios.post(endPoints.auth.login, { email, password }, options);
-        console.log(access_token);
+        if (access_token) {
+            Cookies.set('token', access_token.access_token, { expires: 5 })
+        }
     };
 
     return {
         user,
         signIn,
+        error,
+        setError
     };
 };
 

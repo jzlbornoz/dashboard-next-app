@@ -362,3 +362,59 @@ const handleSubmit = (event) => {
     );
   };
 ```
+
+== Obteniendo el token de la API ==
+
+1. Se hace la validacion si tenemos el access_token:
+2. Agregamos la informacion obtenida a una cookie con `Cookies.set()`, en el cual le pasaremos 3 parametros, el primero sera el nombre (string), el segundo sera el valor (access_token) , y el tercero sera la duracion ({expire}).
+
+- useAuth.js
+
+```
+function useProviderAuth() {
+    const [user, setUser] = useState(null);
+
+    const signIn = async (email, password) => {
+        const options = {
+            headers: {
+                accept: '*/*',
+                'Content-Type': 'application/json',
+            },
+        };
+        //==Lectura del AccessToken que viene desde la api, para posteriormente agregarla a una cookie
+        const { data: access_token } = await axios.post(endPoints.auth.login, { email, password }, options);
+        if (access_token) {
+            Cookies.set('token', access_token.access_token, { expires: 5 })
+        }
+    };
+```
+3. Se agrego la logica de error en el login, se creo un estado error en useAuth.js:
+```
+ const [error , setError] = useState(false);
+```
+4. Luego se agrego la logica en en handleSubmit del login page:
+```
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const user = userRef.current.value;
+    const password = passwordRef.current.value;
+    auth.signIn(user, password).then(() => {
+      auth.setError(false);
+      console.log("LoginSucces")
+    },
+      (err) => {
+        console.log("Error Login");
+        console.error(err);
+        auth.setError(true);
+      }
+    );
+  };
+```
+5. Luego se agrego un div al final del formulario con la logica al obtener el error:
+```
+ {auth.error ? (
+              <div className="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
+                <span className="font-medium">Login Failed!</span> {auth.error}
+              </div>
+            ) : null}
+```
