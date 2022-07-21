@@ -435,3 +435,33 @@ function useProviderAuth() {
             //console.log(user);
             setUser(user);
 ```
+== Uso de useAuth para el acceso a los datos de Usuario == 
+1. Se usa useRouter en LoginPage para la redireccion a la pagina dashboard.js
+```
+auth.signIn(user, password).then(
+      () => {
+        auth.setError(false);
+        console.log('LoginSucces');
+        router.push('/dashboard');
+
+      },
+      (err) => {
+        console.log('Error Login');
+        console.error(err);
+        auth.setError(true);
+      }
+    );
+```
+2. Se agrega el context en el Header:
+```
+import { useAuth } from '@hooks/useAuth';
+```
+```
+const auth = useAuth();
+
+  const userData = {
+    name: auth?.user?.name,
+    email: auth?.user?.mail,
+    imageUrl: auth?.user?.avatar,
+  };
+```
