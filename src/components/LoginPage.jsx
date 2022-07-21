@@ -11,12 +11,13 @@ export default function LoginPage() {
     event.preventDefault();
     const user = userRef.current.value;
     const password = passwordRef.current.value;
-    auth.signIn(user, password).then(() => {
-      auth.setError(false);
-      console.log("LoginSucces")
-    },
+    auth.signIn(user, password).then(
+      () => {
+        auth.setError(false);
+        console.log('LoginSucces');
+      },
       (err) => {
-        console.log("Error Login");
+        console.log('Error Login');
         console.error(err);
         auth.setError(true);
       }
