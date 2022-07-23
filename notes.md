@@ -429,14 +429,18 @@ function useProviderAuth() {
 
 1. Se hace el llamado al servidor para obtener los datos del usuario mediante el envio del token en los headers del llamado:
 2. Luego se guardan en el setUser.
+
 ```
   axios.defaults.headers.Authorization = `Bearer ${token}`;
             const { data: user} =  await axios.get(endPoints.auth.profile);
             //console.log(user);
             setUser(user);
 ```
-== Uso de useAuth para el acceso a los datos de Usuario == 
+
+== Uso de useAuth para el acceso a los datos de Usuario ==
+
 1. Se usa useRouter en LoginPage para la redireccion a la pagina dashboard.js
+
 ```
 auth.signIn(user, password).then(
       () => {
@@ -452,10 +456,13 @@ auth.signIn(user, password).then(
       }
     );
 ```
+
 2. Se agrega el context en el Header:
+
 ```
 import { useAuth } from '@hooks/useAuth';
 ```
+
 ```
 const auth = useAuth();
 
@@ -464,4 +471,52 @@ const auth = useAuth();
     email: auth?.user?.mail,
     imageUrl: auth?.user?.avatar,
   };
+```
+
+== Obteniendo la lista de productos desde la API ==
+
+1. Se crea el hook useFetch.js.
+
+- ./hooks/useFetch.js
+
+```
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+
+const useFetch = (endpoint) => {
+    const [data, setData] = useState([]);
+
+    async function fetchData(params) {
+        const response = await axios.get(endpoint);
+        setData(response.data);
+    }
+
+    useEffect(() => {
+        try {
+            fetchData();
+        } catch (error) {
+            console.log(error);
+        }
+    }, []);
+
+    return {
+        data,
+    };
+};
+
+export default useFetch;
+
+```
+
+2. Se hace el llamado a useFetch en el dasboard page.
+
+```
+export default function Dashboard() {
+  const offset = 5;
+  const limit = 5;
+  const products = useFetch(endPoints.products.getProducts(offset, limit));
+  console.log(products);
+  return (
+    ...
+    )
 ```
