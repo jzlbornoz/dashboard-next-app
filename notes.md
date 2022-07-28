@@ -559,3 +559,111 @@ const Chart = ({ ChartData }) => {
 
 export default Chart
 ```
+
+== Integracion del componente chart ==
+
+1. Se agrega el componente chart en el dashboard:
+
+```
+ <Chart chartData={data} className="mb-8 mt-2" />
+```
+
+2. Se crea la constante data que es un objeto que contiene el dataset con los siguientes parametros parametros:
+
+```
+const data = {
+    datasets: [
+      {
+        label: 'Cateogires',
+        data: ['others', 'clothes'],
+        borderWidth: 2,
+        backgroundColor: ['#324485', '#723285', '#7d2056', '#2c7a3d'],
+      },
+    ],
+  };
+```
+
+3. Se agrega la logica para poder mostrar los datos en la grafica.
+
+- Para obtener las categorias de los productos:
+
+```
+  const categoryName = products?.map((product) => product.category);
+  const categoryCount = categoryName?.map((category) => category.name);
+```
+
+- Se agrega el contador de ocurrencias :
+
+```
+const countOccurencies = (arr) => arr.reduce((prev, curr) => ((prev[curr] = ++prev[curr] || 1), prev),
+    {});
+```
+
+4. Se agrega al data:
+
+```
+ const data = {
+    datasets: [
+      {
+        label: 'Cateogires',
+        data: countOccurencies(categoryCount),
+        borderWidth: 2,
+        backgroundColor: ['#324485', '#723285', '#7d2056', '#2c7a3d'],
+      },
+    ],
+  };
+```
+
+5. Dato importante: cómo realizar la operación de reduce en countOcurrences:
+
+```
+//Si colocamos solo 3 productos para mostrar en el dashboard
+
+const categoryNames = products?.map((product) => product.category);
+
+/*La salida de categoryNames nos trae toda la información por cada producto
+(3) [{…}, {…}, {…}]
+        1. 0: {id: 1, name: 'Clothes', image: 'https://api.lorem.space/image/fashion?w=640&h=480&r=3714'}
+        2. 1: {id: 3, name: 'Furniture', image: 'https://api.lorem.space/image/furniture?w=640&h=480&r=9014'}
+        3. 2: {id: 3, name: 'Furniture', image: 'https://api.lorem.space/image/furniture?w=640&h=480&r=9014'}
+        4. length: 3
+        5. [[Prototype]]: Array(0)
+*/
+
+const categoryCount = categoryNames?.map((category) => category.name);
+
+/*Con categoryCount se obtiene un arreglo con todas las categorías en este caso de 3 productos
+(3) ['Clothes', 'Furniture', 'Furniture']
+        1. 0: "Clothes"
+        2. 1: "Furniture"
+        3. 2: "Furniture"
+        4. length: 3
+        5. [[Prototype]]: Array(0)
+
+*/
+
+
+const countOcurrences = (arr) => arr.reduce((prev, curr) => ((prev[curr] = ++prev[curr] || 1), prev), {});
+
+/*Con countOcurrences para estos 3 productos tenemos que el array es {Clothes, Furniture, Furniture}
+     0        1         2
+Función: (prev[curr] = ++prev[curr] || 1)
+
+Para la primera iteración:
+prev = {} es vacío porque se le indicó con llaves {}
+curr = {Clothes}
+La función: si {} == Clothes entonces {Clothes} se incrementa en 1 si no se crea {Clothes : 1}, en este caso se cumplió el lado derecho y se crea 1 Clothes
+
+Para la segunda iteración:
+prev = {Clothes : 1} así quedó en la primera iteración
+curr = {Furniture}
+La función: ¿En {Clothes : 1} hay un Furniture? Como no hay, entonces  se crea y agrega { Furniture : 1}, se cumplió el lado derecho
+
+Para la tercera iteración:
+prev = {Clothes : 1, Furniture : 1} así quedó en la segunda iteración
+curr = {Furniture}
+La función: ¿En {Clothes : 1, Furniture : 1} hay un Furniture? Como si hay, entonces  se incrementa Furniture { Furniture : 2}, se cumplió el lado izquierdo */
+
+console.log(countOcurrences(categoryCount));
+//La salida queda: {Clothes : 1, Furniture : 2}
+```
