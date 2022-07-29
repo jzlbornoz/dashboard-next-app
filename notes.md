@@ -667,3 +667,33 @@ La función: ¿En {Clothes : 1, Furniture : 1} hay un Furniture? Como si hay, en
 console.log(countOcurrences(categoryCount));
 //La salida queda: {Clothes : 1, Furniture : 2}
 ```
+
+== Conexión del modal para crear productos ==
+
+1. Se crea el archivo products.js en el directorio 'dashboard' para poder listar los productos y asi agregar las funcionalidades 'add', 'delete', 'edit'.
+
+```
+
+export default function products() {
+    const [products, setProducts] = useState([]);
+
+    //--
+    return (
+        <>
+        ....
+```
+
+2. Se importa el modal del directorio common: `import Modal from '@common/Modal';`
+3. Se agrega el modal al final del componente products.
+
+```
+      <Modal open={open} setOpen={setOpen}>
+                <h2>Hola</h2>
+            </Modal>
+```
+
+4. Se agrega el estado de open:
+
+```
+   const [open, setOpen] = useState(false);
+```
