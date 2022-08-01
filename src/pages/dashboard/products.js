@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { CheckIcon, ChevronDownIcon } from '@heroicons/react/solid';
 import Modal from '@common/Modal';
+import FormProduct from '@components/FormProduct';
 
 export default function products() {
     const [products, setProducts] = useState([]);
@@ -92,7 +93,7 @@ export default function products() {
                 </div>
             </div>
             <Modal open={open} setOpen={setOpen}>
-                <h2>Hola</h2>
+                <FormProduct />
             </Modal>
         </>
     );

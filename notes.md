@@ -697,3 +697,8 @@ export default function products() {
 ```
    const [open, setOpen] = useState(false);
 ```
+== Construcción del modal para crear productos == 
+1. se agrega el formProduct para integrarlo al modal:
+```
+
+```
